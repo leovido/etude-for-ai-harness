@@ -118,6 +118,46 @@
     nav.toc a { color: var(--a); text-decoration: none; }
     nav.toc a:hover { text-decoration: underline; }
 
+    .sources {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px 14px;
+      margin: 0 0 24px;
+    }
+
+    .sources .label {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .sources ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .sources a {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 14px;
+      color: var(--a);
+      text-decoration: none;
+    }
+
+    .sources a:hover { text-decoration: underline; }
+
+    .sources .desc {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     h2 {
       font-size: 22px;
       margin: 44px 0 12px;
@@ -447,6 +487,24 @@
         <span class="pill">N = 1 task</span>
       </div>
     </header>
+
+    <section class="sources" aria-label="Related documents">
+      <div class="label">Individual reports</div>
+      <ul>
+        <li>
+          <a href="step-1-run-metrics-with-harness.html">Run A metrics — with harness</a>
+          <span class="desc"> — baseline with AGENTS.md, PROGRESS.md, and verify.sh</span>
+        </li>
+        <li>
+          <a href="step-1-run-metrics-no-harness.html">Run B metrics — without harness</a>
+          <span class="desc"> — same prompt with user-level rules only</span>
+        </li>
+        <li>
+          <a href="HARNESS_ABLATION_INSIGHTS.md">Written insights</a>
+          <span class="desc"> — narrative findings from the two runs</span>
+        </li>
+      </ul>
+    </section>
 
     <nav class="toc" aria-label="On this page">
       <a href="#headline">Headline</a>
