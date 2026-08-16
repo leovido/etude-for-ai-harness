@@ -1,5 +1,4 @@
-import { server } from './mocks/server.test';
-import '@testing-library/react-native/extend-expect';
+import { server } from './mocks/server.node';
 
 // Establish API mocking before all tests
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));

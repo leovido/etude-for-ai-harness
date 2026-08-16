@@ -6,12 +6,12 @@ pre-commit:
     format:
       run: pnpm format:check
     test:
-      run: pnpm test -- --runInBand
+      run: pnpm test --runInBand
 
 pre-push:
   parallel: true
   commands:
     test:
-      run: pnpm test -- --runInBand
+      run: pnpm test --runInBand
     typecheck:
       run: pnpm typecheck

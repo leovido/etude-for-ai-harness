@@ -18,6 +18,8 @@ export function useMerchant() {
   });
 
   useEffect(() => {
+    // Reading the key makes each retry an explicit new request cycle.
+    void requestKey;
     const controller = new AbortController();
 
     setState((current) => ({ ...current, error: null, isLoading: true }));

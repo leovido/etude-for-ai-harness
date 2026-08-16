@@ -1,22 +1,22 @@
 /**
  * MSW Request Handlers
  */
-import { http, HttpResponse } from 'msw';
+import { HttpResponse, http } from 'msw';
 import { API_BASE_URL } from '../constants';
-import {
-  createPayout,
-  getPayoutById,
-  generateMockActivity,
-  getPaginatedActivity,
-  getAvailableBalance,
-  getPendingBalance,
-  getCurrentCurrency,
-} from './data';
 import type {
-  MerchantDataResponse,
   CreatePayoutRequest,
+  MerchantDataResponse,
   PaginatedActivityResponse,
 } from '../types/api';
+import {
+  createPayout,
+  generateMockActivity,
+  getAvailableBalance,
+  getCurrentCurrency,
+  getPaginatedActivity,
+  getPayoutById,
+  getPendingBalance,
+} from './data';
 
 /**
  * Helper function to log MSW requests with color coding
@@ -26,7 +26,7 @@ function logRequest(
   url: string,
   status: number,
   responseData: unknown,
-  requestBody?: unknown
+  requestBody?: unknown,
 ) {
   // Determine color based on status code
   let statusColor = '#4CAF50'; // Green for 2xx
@@ -51,7 +51,7 @@ function logRequest(
     '', // Reset after [MSW]
     methodStyle,
     '', // Reset after method
-    statusStyle
+    statusStyle,
   );
 
   // Log full response object on next line
@@ -59,12 +59,7 @@ function logRequest(
 
   // Log request body if provided
   if (requestBody) {
-    console.log(
-      '%cRequest Body:%c',
-      bodyLabelStyle,
-      '',
-      requestBody
-    );
+    console.log('%cRequest Body:%c', bodyLabelStyle, '', requestBody);
   }
 }
 
@@ -150,7 +145,7 @@ export const handlers = [
     // Determine final status: fail if amount ends in 99 pence, otherwise complete
     const finalStatus = amount % 100 === 99 ? 'failed' : 'completed';
     const payout = createPayout(amount, currency, iban, finalStatus);
-    
+
     logRequest('POST', request.url, 201, payout, body);
     return HttpResponse.json(payout, { status: 201 });
   }),

@@ -3,10 +3,10 @@
  */
 import type {
   ActivityItem,
-  PayoutResponse,
-  PayoutStatus,
   Currency,
   PaginatedActivityResponse,
+  PayoutResponse,
+  PayoutStatus,
 } from '../types/api';
 
 // In-memory store for payout states
@@ -52,7 +52,7 @@ export function createPayout(
   amount: number,
   currency: Currency,
   iban: string,
-  status: PayoutStatus = 'pending'
+  status: PayoutStatus = 'pending',
 ): PayoutResponse {
   const id = generatePayoutId();
   const payout: PayoutResponse = {
@@ -63,7 +63,7 @@ export function createPayout(
     iban,
     created_at: new Date().toISOString(),
   };
-  
+
   payoutStore.set(id, { payout, created_at: Date.now() });
   return payout;
 }
@@ -83,7 +83,7 @@ export function getPayoutById(id: string): PayoutResponse | null {
 
   // Simulate status progression over time
   let status: PayoutStatus = payout.status;
-  
+
   if (payout.status === 'pending' && elapsed > 2000) {
     // After 2 seconds, move to processing
     status = 'processing';
@@ -222,8 +222,6 @@ const baseActivities: Omit<ActivityItem, 'currency'>[] = [
   },
 ];
 
-// Track request count to add new activities
-let requestCount = 0;
 let activityCounter = 16; // Start from act_016
 
 // Generate a large pool of activities for pagination
@@ -231,7 +229,7 @@ let activityCounter = 16; // Start from act_016
 function generateAllActivities(): ActivityItem[] {
   const now = new Date();
   const currency = currentCurrency;
-  
+
   // Start with base activities
   const activities: ActivityItem[] = baseActivities.map((activity) => ({
     ...activity,
@@ -244,29 +242,29 @@ function generateAllActivities(): ActivityItem[] {
     const activityId = `act_${String(activityCounter).padStart(3, '0')}`;
     // Distribute activities over the past 60 days
     const daysAgo = Math.floor(i / (additionalCount / 60));
-    const hoursAgo = (i % 24);
-    const minutesAgo = (i % 60);
+    const hoursAgo = i % 24;
+    const minutesAgo = i % 60;
     const isPositive = Math.random() > 0.4; // 60% chance of positive amount
     const baseAmount = Math.floor(Math.random() * 200000) + 10000; // Random amount between 100.00 and 2000.00 in pence
     const amount = isPositive ? baseAmount : -baseAmount;
-    
-    const types: ActivityItem['type'][] = isPositive 
-      ? ['deposit'] 
-      : ['payout', 'fee', 'refund'];
+
+    const types: ActivityItem['type'][] = isPositive ? ['deposit'] : ['payout', 'fee', 'refund'];
     const type = types[Math.floor(Math.random() * types.length)];
-    
+
     const descriptions = {
       deposit: `Payment from Customer ${String.fromCharCode(65 + (activityCounter % 26))}${String.fromCharCode(65 + ((activityCounter * 2) % 26))}${String.fromCharCode(65 + ((activityCounter * 3) % 26))}`,
       payout: `Payout to Bank Account ****${String(activityCounter).padStart(4, '0')}`,
-      fee: ['Monthly service fee', 'Transaction fee', 'Processing fee'][Math.floor(Math.random() * 3)],
+      fee: ['Monthly service fee', 'Transaction fee', 'Processing fee'][
+        Math.floor(Math.random() * 3)
+      ],
       refund: `Refund to Customer ${String.fromCharCode(65 + (activityCounter % 26))}${String.fromCharCode(65 + ((activityCounter * 2) % 26))}${String.fromCharCode(65 + ((activityCounter * 3) % 26))}`,
     };
 
     const date = new Date(
-      now.getTime() - 
-      daysAgo * 24 * 60 * 60 * 1000 - 
-      hoursAgo * 60 * 60 * 1000 - 
-      minutesAgo * 60 * 1000
+      now.getTime() -
+        daysAgo * 24 * 60 * 60 * 1000 -
+        hoursAgo * 60 * 60 * 1000 -
+        minutesAgo * 60 * 1000,
     );
 
     activities.push({
@@ -278,7 +276,7 @@ function generateAllActivities(): ActivityItem[] {
       description: descriptions[type],
       status: 'completed',
     });
-    
+
     activityCounter++;
   }
 
@@ -305,7 +303,7 @@ function generateNewActivities(count: number = 2): ActivityItem[] {
   const now = new Date();
   const currency = currentCurrency;
   const newActivities: ActivityItem[] = [];
-  
+
   for (let i = 0; i < count; i++) {
     const activityId = `act_${String(activityCounter).padStart(3, '0')}`;
     // New activities should be very recent (within the last hour, with slight variation)
@@ -313,16 +311,16 @@ function generateNewActivities(count: number = 2): ActivityItem[] {
     const isPositive = Math.random() > 0.4; // 60% chance of positive amount
     const baseAmount = Math.floor(Math.random() * 200000) + 10000; // Random amount between 100.00 and 2000.00 in pence
     const amount = isPositive ? baseAmount : -baseAmount;
-    
-    const types: ActivityItem['type'][] = isPositive 
-      ? ['deposit'] 
-      : ['payout', 'fee', 'refund'];
+
+    const types: ActivityItem['type'][] = isPositive ? ['deposit'] : ['payout', 'fee', 'refund'];
     const type = types[Math.floor(Math.random() * types.length)];
-    
+
     const descriptions = {
       deposit: `Payment from Customer ${String.fromCharCode(65 + (activityCounter % 26))}${String.fromCharCode(65 + ((activityCounter * 2) % 26))}${String.fromCharCode(65 + ((activityCounter * 3) % 26))}`,
       payout: `Payout to Bank Account ****${String(activityCounter).padStart(4, '0')}`,
-      fee: ['Monthly service fee', 'Transaction fee', 'Processing fee'][Math.floor(Math.random() * 3)],
+      fee: ['Monthly service fee', 'Transaction fee', 'Processing fee'][
+        Math.floor(Math.random() * 3)
+      ],
       refund: `Refund to Customer ${String.fromCharCode(65 + (activityCounter % 26))}${String.fromCharCode(65 + ((activityCounter * 2) % 26))}${String.fromCharCode(65 + ((activityCounter * 3) % 26))}`,
     };
 
@@ -335,7 +333,7 @@ function generateNewActivities(count: number = 2): ActivityItem[] {
       description: descriptions[type],
       status: 'completed',
     });
-    
+
     activityCounter++;
   }
 
@@ -357,10 +355,10 @@ export function generateMockActivity(): ActivityItem[] {
  */
 export function getPaginatedActivity(
   cursor: string | null = null,
-  limit: number = 15
+  limit: number = 15,
 ): PaginatedActivityResponse {
   let allActivities = getAllActivities();
-  
+
   // If fetching first page (no cursor or cursor is "first"), add new activities
   if (cursor === null || cursor === 'first') {
     const newActivities = generateNewActivities(2);
@@ -369,7 +367,7 @@ export function getPaginatedActivity(
     // Update cache with new activities
     cachedActivities = allActivities;
   }
-  
+
   // Find starting index
   let startIndex = 0;
   if (cursor && cursor !== 'first') {
@@ -378,12 +376,12 @@ export function getPaginatedActivity(
       startIndex = cursorIndex + 1;
     }
   }
-  
+
   // Get the page of items
   const items = allActivities.slice(startIndex, startIndex + limit);
   const next_cursor = items.length > 0 ? items[items.length - 1].id : null;
   const has_more = startIndex + limit < allActivities.length;
-  
+
   return {
     items,
     next_cursor: has_more ? next_cursor : null,

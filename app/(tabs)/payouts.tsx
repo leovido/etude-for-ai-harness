@@ -13,7 +13,6 @@ export default function PayoutsScreen() {
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle">Payout Amount</ThemedText>
       </ThemedView>
-
     </ThemedView>
   );
 }
