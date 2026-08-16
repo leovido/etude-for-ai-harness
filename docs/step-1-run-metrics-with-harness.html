@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Step 1 run metrics — with AI harness</title>
+  <style>
+    :root {
+      --ink: #12151a;
+      --muted: #5c6570;
+      --line: #d8dde3;
+      --paper: #f6f4ef;
+      --card: #fff;
+      --accent: #0a7ea4;
+      --ok: #1b8a3e;
+      --bad: #b42318;
+      --warn: #9a6700;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    header.hero {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 0;
+      line-height: 1.15;
+    }
+
+    .lede {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .pill.accent {
+      background: #e8f4f8;
+      border-color: #c5e2ec;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 20px;
+      margin: 40px 0 14px;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 22px 0 8px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+
+    p, li { font-size: 15.5px; }
+    .note { color: var(--muted); font-size: 14px; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+    }
+
+    .stat .label {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      margin-top: 4px;
+    }
+
+    .stat .sub {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 14.5px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #faf9f6;
+      font-weight: 700;
+    }
+
+    tr:last-child th, tr:last-child td { border-bottom: 0; }
+    td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.86em;
+      background: #eeeae3;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .ok { color: var(--ok); font-weight: 600; }
+    .bad { color: var(--bad); font-weight: 600; }
+    .warn { color: var(--warn); font-weight: 600; }
+
+    .bars {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 110px 1fr 40px;
+      gap: 10px;
+      align-items: center;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .track {
+      height: 10px;
+      background: #ece8e0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    ul.compact { margin: 0; padding-left: 18px; }
+    ul.compact li { margin: 4px 0; }
+
+    .compare td:nth-child(3) {
+      background: #fbfaf7;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .compare td:nth-child(3)::after {
+      content: "";
+    }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .stats, .two { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 26px; }
+    }
+
+    @media (max-width: 520px) {
+      .stats, .two { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .wrap { padding: 0; }
+      .stat, table { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="kicker">Harness ablation · run A</div>
+      <h1>Step 1 run metrics — with AI harness</h1>
+      <p class="lede">
+        Baseline for a later run of the same task (README Step 1) without the repo harness
+        from the previous commit: <code>AGENTS.md</code>, skills, <code>PROGRESS.md</code> workflow,
+        and <code>docs/software-principles.md</code>.
+      </p>
+      <div class="pills">
+        <span class="pill accent">Condition: with harness</span>
+        <span class="pill">2026-08-14</span>
+        <span class="pill">Cursor Grok 4.6</span>
+        <span class="pill">Uncommitted</span>
+        <span class="pill">Transcript 16642d16</span>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Headline metrics">
+      <div class="stat">
+        <div class="label">Prompt → last write</div>
+        <div class="value">22<span style="font-size:18px"> min</span></div>
+        <div class="sub">09:26 → 09:47 UTC+2</div>
+      </div>
+      <div class="stat">
+        <div class="label">Subagents</div>
+        <div class="value">0</div>
+        <div class="sub">Single parent loop</div>
+      </div>
+      <div class="stat">
+        <div class="label">Tool calls</div>
+        <div class="value">106</div>
+        <div class="sub">51 of them reads</div>
+      </div>
+      <div class="stat">
+        <div class="label">Tests</div>
+        <div class="value">24</div>
+        <div class="sub">Green after 1 fix cycle</div>
+      </div>
+    </section>
+
+    <h2>Models and agents</h2>
+    <table>
+      <thead>
+        <tr><th>Field</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Parent model</td><td>Cursor Grok 4.6 (<code>cursor-grok-4.6</code>)</td></tr>
+        <tr><td>Subagents launched</td><td><strong>0</strong> — <code>Task</code> tool not used</td></tr>
+        <tr><td>User turns (implementation)</td><td>1 — “Start implementing Step 1 only from README.md”</td></tr>
+        <tr><td>Assistant steps in that turn</td><td>23</td></tr>
+        <tr><td>Follow-up</td><td>Metrics request at 14:12 — excluded from implementation time</td></tr>
+      </tbody>
+    </table>
+    <p class="note">No parallel explore / shell / review subagents. Exploration and implementation ran in one parent agent loop.</p>
+
+    <h2>Time</h2>
+    <p class="note">From file birth/mtime (UTC+2) plus the user prompt timestamp. Token-level latency is not in the transcript.</p>
+    <div class="two">
+      <table>
+        <thead>
+          <tr><th>Milestone</th><th>Timestamp</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>User prompt</td><td class="num">09:26</td></tr>
+          <tr><td>First write (<code>PROGRESS.md</code>)</td><td class="num">09:35:15</td></tr>
+          <tr><td>First production code (<code>format-money.ts</code>)</td><td class="num">09:35:18</td></tr>
+          <tr><td>Last implementation write (<code>app/_layout.tsx</code>)</td><td class="num">09:47:49</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr><th>Duration</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Prompt → last write</td><td><strong>~22 min</strong></td></tr>
+          <tr><td>Explore before first code</td><td>~9 min</td></tr>
+          <tr><td>Code + test + fix loop</td><td>~13 min</td></tr>
+          <tr><td>Idle until metrics request</td><td>~4 h 24 min — <em>do not count as work</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Verification wall time (shell)</h3>
+    <table>
+      <thead>
+        <tr><th>Command</th><th>Wall time</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>./verify.sh --lint-only</code> (1st)</td>
+          <td class="num">17.8 s</td>
+          <td>Lint + typecheck pass; <span class="bad">tests fail (6)</span></td>
+        </tr>
+        <tr>
+          <td><code>pnpm test</code> (failed suites only)</td>
+          <td class="num">9.7 s</td>
+          <td><span class="ok">9/9 pass</span> after SafeArea fix</td>
+        </tr>
+        <tr>
+          <td><code>./verify.sh --lint-only</code> (2nd)</td>
+          <td class="num">12.8 s</td>
+          <td><span class="ok">All green</span> — 10 suites, 24 tests</td>
+        </tr>
+        <tr>
+          <td><code>pnpm run typecheck</code> (layout tweak)</td>
+          <td class="num">2.5 s</td>
+          <td><span class="ok">Pass</span></td>
+        </tr>
+        <tr>
+          <td>Full <code>./verify.sh</code> (app boot)</td>
+          <td class="num">—</td>
+          <td><span class="warn">Not run</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Tooling</h2>
+    <div class="bars" aria-label="Tool call distribution">
+      <div class="bar-row"><span>Read</span><div class="track"><div class="fill" style="width:48%"></div></div><span>51</span></div>
+      <div class="bar-row"><span>Write</span><div class="track"><div class="fill" style="width:21%"></div></div><span>22</span></div>
+      <div class="bar-row"><span>StrReplace</span><div class="track"><div class="fill" style="width:14%"></div></div><span>15</span></div>
+      <div class="bar-row"><span>Glob</span><div class="track"><div class="fill" style="width:9%"></div></div><span>10</span></div>
+      <div class="bar-row"><span>Shell</span><div class="track"><div class="fill" style="width:4%"></div></div><span>4</span></div>
+      <div class="bar-row"><span>TodoWrite</span><div class="track"><div class="fill" style="width:3%"></div></div><span>3</span></div>
+      <div class="bar-row"><span>Grep</span><div class="track"><div class="fill" style="width:1%"></div></div><span>1</span></div>
+      <div class="bar-row"><span>Task</span><div class="track"><div class="fill" style="width:0%"></div></div><span>0</span></div>
+    </div>
+    <p class="note">Read-heavy start is mostly harness + repo discovery (README, AGENTS.md, skills, types, mocks, screenshots). Total = 106.</p>
+
+    <h2>Harness that was in effect</h2>
+    <p>Independent variable for the next run. Remove or revert these before the no-harness comparison.</p>
+    <div class="two">
+      <div>
+        <h3>Instruction</h3>
+        <ul class="compact">
+          <li>Workspace <code>AGENTS.md</code>: stack, pnpm, compound components, test-per-function, vertical slices, PROGRESS.md, verify.sh</li>
+          <li><code>docs/software-principles.md</code></li>
+          <li>Cursor user rules: Conventional Commits, no commit unless asked, TS strict, Jest, pnpm</li>
+          <li>Skills read (not all followed): <code>react-native-patterns</code>, <code>commit-after-change</code> (no commit), <code>tdd</code></li>
+        </ul>
+      </div>
+      <div>
+        <h3>State, feedback, tools</h3>
+        <ul class="compact">
+          <li>Created and updated <code>PROGRESS.md</code> (IN PROGRESS → DONE)</li>
+          <li>Gate: <code>./verify.sh --lint-only</code> (lint, typecheck, Jest)</li>
+          <li>Did not run full app-boot <code>./verify.sh</code></li>
+          <li>Used: pnpm, verify.sh, Bash, rg. Unused: git commit, gh, Gradle, adb, xcrun, xcodebuild</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>What shipped</h2>
+    <table>
+      <thead>
+        <tr><th>Check</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Step 1 scope</td><td><span class="ok">Yes</span> — balances, 3 recent items, Show More modal, loading/error</td></tr>
+        <tr><td>Pagination / Step 2</td><td>Intentionally omitted</td></tr>
+        <tr><td><code>./verify.sh --lint-only</code></td><td><span class="ok">Green</span> after 1 test-fix cycle</td></tr>
+        <tr><td>Full <code>./verify.sh</code></td><td><span class="warn">Not run</span></td></tr>
+        <tr><td>Git commit</td><td>None</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Test fix cycle</h3>
+    <ol>
+      <li>First Jest run: <strong>2 suites failed</strong> (<code>activity-list-modal</code>, <code>merchant-home</code>) — <code>SafeAreaProvider</code> rendered no children without <code>initialMetrics</code>.</li>
+      <li>Added <code>test-utils/render-with-providers.tsx</code>, wrapped tests, moved loading label onto the container, wrapped hook <code>retry()</code> in <code>act()</code>.</li>
+      <li>Second full test run: <span class="ok">24 passed</span>.</li>
+    </ol>
+
+    <h3>Files and tests</h3>
+    <div class="two">
+      <table>
+        <thead>
+          <tr><th>Area</th><th>Created</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>API</td><td><code>lib/api/client.ts</code>, <code>merchant.ts</code> + tests</td></tr>
+          <tr><td>Money</td><td><code>lib/money/format-money.ts</code> + test</td></tr>
+          <tr><td>Activity</td><td><code>select-recent-activity.ts</code> + test</td></tr>
+          <tr><td>Hook</td><td><code>hooks/use-merchant.ts</code> + test</td></tr>
+          <tr><td>UI</td><td>account-balance, recent-activity, activity-list-modal, merchant-home + tests</td></tr>
+          <tr><td>Test util</td><td><code>test-utils/render-with-providers.tsx</code></td></tr>
+          <tr><td>State</td><td><code>PROGRESS.md</code></td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Files created / modified</td><td>21 created, 3 modified</td></tr>
+          <tr><td>Lines (<code>wc -l</code>)</td><td>~1,125</td></tr>
+          <tr><td>Suites after Step 1</td><td>10 (1 pre-existing + 9 new)</td></tr>
+          <tr><td>Tests after Step 1</td><td>24</td></tr>
+          <tr><td>New tests (approx.)</td><td>23</td></tr>
+          <tr><td>First-run failures</td><td>6 tests / 2 suites</td></tr>
+          <tr><td>Fix iterations before green</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Modified: <code>app/(tabs)/index.tsx</code>, <code>app/_layout.tsx</code>, <code>constants/theme.ts</code>.</p>
+
+    <h2>Comparison table — fill on the no-harness run</h2>
+    <p>Keep the task prompt identical: <em>Start implementing Step 1 only from README.md</em>.</p>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>With harness (this run)</th>
+          <th>Without harness (next run)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Model</td><td>Cursor Grok 4.6</td><td></td></tr>
+        <tr><td>Subagents</td><td>0</td><td></td></tr>
+        <tr><td>Prompt → last write</td><td>~22 min</td><td></td></tr>
+        <tr><td>Explore before first code</td><td>~9 min</td><td></td></tr>
+        <tr><td>Verify <code>--lint-only</code> attempts</td><td>2 (1 fail, 1 pass)</td><td></td></tr>
+        <tr><td>Tool calls</td><td>106</td><td></td></tr>
+        <tr><td>Read calls</td><td>51</td><td></td></tr>
+        <tr><td>Files created / modified</td><td>21 created, 3 modified</td><td></td></tr>
+        <tr><td>Tests added</td><td>~23</td><td></td></tr>
+        <tr><td><code>PROGRESS.md</code> used</td><td>Yes</td><td></td></tr>
+        <tr><td>Compound components</td><td>Yes (<code>AGENTS.md</code>)</td><td></td></tr>
+        <tr><td>Skills loaded</td><td>3 (patterns, commit, tdd)</td><td></td></tr>
+        <tr><td>Full app verify</td><td>No</td><td></td></tr>
+        <tr><td>Commit</td><td>No</td><td></td></tr>
+        <tr><td>Scope creep into Step 2</td><td>No</td><td></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Notes to capture on the next run</h3>
+    <ul class="compact">
+      <li>Did the agent invent an API client and test layout without <code>AGENTS.md</code>?</li>
+      <li>Did it skip tests, skip <code>verify.sh</code>, or skip loading/error states?</li>
+      <li>Did it paginate in Step 1 anyway?</li>
+      <li>Did it use compound components without being told?</li>
+      <li>How much time was spent re-discovering stack/verify vs implementing UI?</li>
+    </ul>
+
+    <footer>
+      <strong>Caveats.</strong>
+      Tokens / cost are not in the agent transcript — do not compare cost from this file.
+      Thinking traces were not persisted (<code>thinking_chars = 0</code>).
+      Wall clock is file + prompt timestamps, not model inference time.
+      Creating this metrics page is not part of the Step 1 implementation duration.
+    </footer>
+  </div>
+</body>
+</html>
