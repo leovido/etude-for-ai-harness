@@ -1,6 +1,13 @@
 # 💳 Merchant Payout App Challenge (Expo)
+## Agentic engineering / Harness Engineering study
 
 Welcome to the Merchant Payout Challenge! This is a mobile frontend coding challenge designed to assess your ability to implement a financial payout experience using React Native and Expo.
+
+This version is a study to compare the performance of various AI agents applying AI workflows and harness engineering.
+
+The techniques applied come from the following resources:
+1. [Free Online Course - Learn harness engineering](https://walkinglabs.github.io/learn-harness-engineering/en/)
+2. [The Discipline Gap. Is Spec-Driven Development the Answer?](https://www.linkedin.com/pulse/discipline-gap-martin-miceli-hmshe/)
 
 Your task is to build a merchant dashboard and payout flow that allows users to:
 
@@ -12,7 +19,7 @@ Your task is to build a merchant dashboard and payout flow that allows users to:
 * Handle various edge cases, including network errors and insufficient funds
 
 ## 📑 Table of Contents
-
+* [🔬 Harness Ablation](#-harness-ablation)
 * [🛠️ Tech Stack](#️-tech-stack)
 * [📡 API Documentation](#-api-documentation)
   * [Available Endpoints](#available-endpoints)
@@ -27,6 +34,15 @@ Your task is to build a merchant dashboard and payout flow that allows users to:
   * [Step 6: Native Security Events  (Native Module)](#step-6-native-security-events--native-module)
 
 ---
+
+## 🔬 Harness Ablation
+
+Step 1 was implemented twice with the same prompt and model: once **with** the repo harness (`AGENTS.md`, `PROGRESS.md`, `verify.sh`) and once **without**.
+
+* **[Comparison (charts + insights)](docs/step-1-harness-ablation-comparison.html)** — merged view of both runs
+* [Run A metrics — with harness](docs/step-1-run-metrics-with-harness.html)
+* [Run B metrics — without harness](docs/step-1-run-metrics-no-harness.html)
+* [Written insights](docs/HARNESS_ABLATION_INSIGHTS.md)
 
 ## 🛠️ Tech Stack
 

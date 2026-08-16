@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Harness ablation — Step 1 comparison</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: "base",
+      themeVariables: {
+        fontFamily: "ui-sans-serif, system-ui, sans-serif",
+        fontSize: "14px",
+        primaryColor: "#e8f4f8",
+        primaryTextColor: "#12151a",
+        primaryBorderColor: "#0a7ea4",
+        secondaryColor: "#f8efe6",
+        secondaryBorderColor: "#c45c26",
+        tertiaryColor: "#f6f4ef",
+        lineColor: "#8a939c",
+        clusterBkg: "#faf9f6",
+        clusterBorder: "#d8dde3",
+      },
+    });
+  </script>
+  <style>
+    :root {
+      --ink: #12151a;
+      --muted: #5c6570;
+      --line: #d8dde3;
+      --paper: #f6f4ef;
+      --card: #fff;
+      --a: #0a7ea4;
+      --a-soft: #e8f4f8;
+      --a-mid: #7ebfd3;
+      --b: #c45c26;
+      --b-soft: #f8efe6;
+      --b-mid: #e0a078;
+      --ok: #1b8a3e;
+      --bad: #b42318;
+      --warn: #9a6700;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    header.hero {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--a);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin: 6px 0 0;
+      line-height: 1.15;
+    }
+
+    .lede {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 68ch;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .pill {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    .pill.a { background: var(--a-soft); border-color: #c5e2ec; color: var(--a); }
+    .pill.b { background: var(--b-soft); border-color: #edcbb6; color: var(--b); }
+
+    nav.toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0 0 32px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    nav.toc a { color: var(--a); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+
+    h2 {
+      font-size: 22px;
+      margin: 44px 0 12px;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin: 22px 0 8px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+
+    p, li { font-size: 15.5px; }
+    .note { color: var(--muted); font-size: 14px; }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+      margin: 8px 0 16px;
+    }
+
+    .swatch {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: -1px;
+    }
+
+    .swatch.a { background: var(--a); }
+    .swatch.b { background: var(--b); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 16px 14px;
+    }
+
+    .stat .label {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      margin-top: 4px;
+    }
+
+    .stat .pair {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .stat .pair .va { color: var(--a); font-weight: 700; }
+    .stat .pair .vb { color: var(--b); font-weight: 700; }
+
+    .stat .delta {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 18px 16px;
+    }
+
+    .two, .three {
+      display: grid;
+      gap: 16px;
+    }
+    .two { grid-template-columns: 1fr 1fr; }
+    .three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .insight {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 20px 16px;
+      margin: 14px 0;
+    }
+
+    .insight .num {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--a);
+      font-weight: 700;
+    }
+
+    .insight h3 { margin-top: 4px; font-size: 17px; font-family: inherit; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 14.5px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #faf9f6;
+      font-weight: 700;
+    }
+
+    tr:last-child th, tr:last-child td { border-bottom: 0; }
+    td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    td.a { color: var(--a); font-weight: 600; }
+    td.b { color: var(--b); font-weight: 600; }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.86em;
+      background: #eeeae3;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .ok { color: var(--ok); font-weight: 600; }
+    .bad { color: var(--bad); font-weight: 600; }
+    .warn { color: var(--warn); font-weight: 600; }
+
+    .takeaway {
+      background: linear-gradient(180deg, #fff 0%, #f3f1eb 100%);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--a);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin: 8px 0 24px;
+    }
+
+    .chart {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px 18px;
+    }
+
+    .gbar {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .gpair { display: grid; gap: 4px; }
+
+    .gtrack {
+      height: 14px;
+      background: #ece8e0;
+      border-radius: 99px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .gfill { height: 100%; }
+    .gfill.a { background: var(--a); }
+    .gfill.b { background: var(--b); }
+    .gfill.a-mid { background: var(--a-mid); }
+    .gfill.b-mid { background: var(--b-mid); }
+
+    .gmeta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .diverge {
+      display: grid;
+      gap: 8px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .drow {
+      display: grid;
+      grid-template-columns: 1fr 88px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dlab {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .dleft, .dright {
+      height: 14px;
+      border-radius: 99px;
+      overflow: hidden;
+      background: #ece8e0;
+    }
+
+    .dleft { display: flex; justify-content: flex-end; }
+    .dright { display: flex; justify-content: flex-start; }
+
+    .dleft .gfill, .dright .gfill { min-width: 0; }
+
+    .mermaid {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 8px;
+      overflow-x: auto;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    .tl-run .name { font-weight: 700; margin-bottom: 6px; }
+    .tl-run.a .name { color: var(--a); }
+    .tl-run.b .name { color: var(--b); }
+
+    .tl-bar {
+      position: relative;
+      height: 36px;
+      background: #ece8e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .tl-seg {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    ul.compact { margin: 0; padding-left: 18px; }
+    ul.compact li { margin: 4px 0; }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .stats, .two, .three { grid-template-columns: 1fr 1fr; }
+      h1 { font-size: 26px; }
+      .drow { grid-template-columns: 1fr 72px 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .stats, .two, .three { grid-template-columns: 1fr; }
+      .gbar { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .wrap { padding: 0; }
+      .stat, .card, .insight, .chart, table { break-inside: avoid; }
+      nav.toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="kicker">Harness ablation · merged comparison</div>
+      <h1>Step 1 with vs without the repo harness</h1>
+      <p class="lede">
+        Same prompt, same day, same model. Run A had repo-level
+        <code>AGENTS.md</code>, <code>PROGRESS.md</code>, <code>verify.sh</code>, and
+        <code>docs/software-principles.md</code>. Run B kept only user-level Cursor
+        rules and skills. Functional scope matched; rigor and path did not.
+      </p>
+      <div class="pills">
+        <span class="pill a">Run A · with harness · 16642d16</span>
+        <span class="pill b">Run B · no repo harness · 07b822d7</span>
+        <span class="pill">2026-08-14</span>
+        <span class="pill">Cursor Grok 4.6</span>
+        <span class="pill">N = 1 task</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="On this page">
+      <a href="#headline">Headline</a>
+      <a href="#time">Time</a>
+      <a href="#tools">Tools</a>
+      <a href="#verify">Verification</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#insights">Insights</a>
+      <a href="#shipped">What shipped</a>
+      <a href="#table">Full table</a>
+    </nav>
+
+    <div class="takeaway" id="headline">
+      <strong>Key takeaway.</strong>
+      The harness’s ROI here is <em>legibility, coverage density, and verification amortization</em>
+      at the cost of ~2× wall time. Run A was slower up front but used a known-working gate
+      and wrote ~2.5× more tests. Run B started faster, then paid for the missing
+      <code>verify.sh</code> by re-solving a known jest-expo problem live.
+      User-level rules still produced tests, types, and loading/error states — the repo
+      harness amplified and specialized; it did not create those habits from scratch.
+    </div>
+
+    <div class="legend">
+      <span><i class="swatch a"></i>Run A · with harness</span>
+      <span><i class="swatch b"></i>Run B · without repo harness</span>
+    </div>
+
+    <section class="stats" aria-label="Headline deltas">
+      <div class="stat">
+        <div class="label">Wall time</div>
+        <div class="value">2.2×</div>
+        <div class="pair"><span class="va">22 min</span><span class="vb">10 min</span></div>
+        <div class="delta">A slower · mostly extra discovery</div>
+      </div>
+      <div class="stat">
+        <div class="label">Tests added</div>
+        <div class="value">2.5×</div>
+        <div class="pair"><span class="va">~23</span><span class="vb">9</span></div>
+        <div class="delta">A denser · test-per-function</div>
+      </div>
+      <div class="stat">
+        <div class="label">Tool calls</div>
+        <div class="value">~same</div>
+        <div class="pair"><span class="va">106</span><span class="vb">116</span></div>
+        <div class="delta">Shape differs, volume does not</div>
+      </div>
+      <div class="stat">
+        <div class="label">Scope</div>
+        <div class="value">=</div>
+        <div class="pair"><span class="va">Step 1</span><span class="vb">Step 1</span></div>
+        <div class="delta">Neither drifted into Step 2</div>
+      </div>
+    </section>
+
+    <h2>Experiment design</h2>
+    <p class="note">Independent variable = repo harness. Both runs still had user-level Cursor rules and the same three skills loaded.</p>
+    <pre class="mermaid">
+flowchart LR
+  P["Prompt: Start implementing Step 1 only"]
+  P --> A["Run A · with harness"]
+  P --> B["Run B · no repo harness"]
+  A --> A1["AGENTS.md · PROGRESS.md · verify.sh · principles"]
+  B --> B1["User rules + skills only"]
+  A1 --> OA["23 tests · compounds · no commit · 22 min"]
+  B1 --> OB["9 tests · hooks · commit 3e0febf · 10 min"]
+    </pre>
+
+    <h2 id="time">Time: the cost is discovery, not coding</h2>
+    <p>
+      Explore-before-first-code was ~9 min with the harness vs ~4 min without —
+      almost the entire gap to first code. Implementation after that was 13 vs 6 min;
+      Run B’s shorter “code” window still included a Jest/MSW environment chase.
+    </p>
+
+    <div class="two">
+      <div class="chart">
+        <h3>Where the 22 vs 10 minutes went</h3>
+        <div class="timeline">
+          <div class="tl-run a">
+            <div class="name">Run A · 22 min</div>
+            <div class="tl-bar" title="Explore 9 min, implement 13 min">
+              <div class="tl-seg" style="left:0;width:41%;background:var(--a-mid);">Explore 9</div>
+              <div class="tl-seg" style="left:41%;width:59%;background:var(--a);">Code + fix 13</div>
+            </div>
+          </div>
+          <div class="tl-run b">
+            <div class="name">Run B · 10 min</div>
+            <div class="tl-bar" title="Explore 4 min, implement 6 min">
+              <div class="tl-seg" style="left:0;width:40%;background:var(--b-mid);">Explore 4</div>
+              <div class="tl-seg" style="left:40%;width:60%;background:var(--b);">Code + infra 6</div>
+            </div>
+          </div>
+        </div>
+        <p class="note" style="margin:12px 0 0;">Scaled to each run’s own duration. Explore share is similar (~40%); Run A’s explore is longer in absolute minutes because it read the harness.</p>
+      </div>
+      <div class="chart">
+        <h3>Same metrics, grouped</h3>
+        <div class="gbar">
+          <span>Prompt → last write</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:45%"></div></div>
+            <div class="gmeta"><span>A 22 min</span><span>B 10 min</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Explore first</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:44%"></div></div>
+            <div class="gmeta"><span>A 9 min</span><span>B 4 min</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Code + fix</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:46%"></div></div>
+            <div class="gmeta"><span>A 13 min</span><span>B 6 min</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Assistant steps</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:70%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:100%"></div></div>
+            <div class="gmeta"><span>A 23</span><span>B 33</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two" style="margin-top:16px;">
+      <table>
+        <thead><tr><th>Milestone</th><th>Run A</th><th>Run B</th></tr></thead>
+        <tbody>
+          <tr><td>User prompt</td><td class="num a">09:26</td><td class="num b">14:21</td></tr>
+          <tr><td>First write</td><td class="num">09:35:15 <code>PROGRESS.md</code></td><td class="num">14:25:28 <code>api/client.ts</code></td></tr>
+          <tr><td>First production code</td><td class="num">09:35:18 <code>format-money.ts</code></td><td class="num">14:25:31 <code>format-money.ts</code></td></tr>
+          <tr><td>Last implementation write</td><td class="num">09:47:49 <code>_layout.tsx</code></td><td class="num">14:31:19 <code>merchant-home.tsx</code></td></tr>
+          <tr><td>Commit</td><td>None</td><td class="num b">14:31:48 <code>3e0febf</code></td></tr>
+        </tbody>
+      </table>
+      <div class="insight" style="margin:0;">
+        <div class="num">Insight 1</div>
+        <h3>Front-loaded comprehension tax</h3>
+        <p>
+          The harness is a one-time read of stack, patterns, and gates before any code.
+          For a single well-scoped task that is overhead. For repeated work on the same
+          repo it amortizes. Run A’s first write was <code>PROGRESS.md</code> — process
+          before product. Run B’s first write was the API client.
+        </p>
+      </div>
+    </div>
+
+    <h2 id="tools">Tool calls: volume converges, distribution does not</h2>
+    <p>
+      106 vs 116 total calls, 51 vs 48 reads — discovery load is almost identical.
+      Run A spends more on <code>Write</code>. Run B spends more on <code>Shell</code>
+      (live environment debugging). Tool-call count is a weak proxy for “how much work.”
+    </p>
+
+    <div class="chart">
+      <h3>Diverging tool mix</h3>
+      <p class="note">Bar length is share of that run’s total calls. Label is raw count.</p>
+      <div class="diverge" aria-label="Tool call comparison">
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:48%"></div></div>
+          <div class="dlab">Read<br>51 · 48</div>
+          <div class="dright"><div class="gfill b" style="width:41%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:21%"></div></div>
+          <div class="dlab">Write<br>22 · 19</div>
+          <div class="dright"><div class="gfill b" style="width:16%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:14%"></div></div>
+          <div class="dlab">StrReplace<br>15 · 15</div>
+          <div class="dright"><div class="gfill b" style="width:13%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:4%"></div></div>
+          <div class="dlab">Shell<br>4 · 15</div>
+          <div class="dright"><div class="gfill b" style="width:13%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:9%"></div></div>
+          <div class="dlab">Glob<br>10 · 9</div>
+          <div class="dright"><div class="gfill b" style="width:8%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:1%"></div></div>
+          <div class="dlab">Grep<br>1 · 5</div>
+          <div class="dright"><div class="gfill b" style="width:4%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:3%"></div></div>
+          <div class="dlab">TodoWrite<br>3 · 3</div>
+          <div class="dright"><div class="gfill b" style="width:3%"></div></div>
+        </div>
+        <div class="drow">
+          <div class="dleft"><div class="gfill a" style="width:0%"></div></div>
+          <div class="dlab">Task<br>0 · 0</div>
+          <div class="dright"><div class="gfill b" style="width:0%"></div></div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:12px;">Neither run launched subagents. Extra Run B tools: Delete 1, ReadLints 1.</p>
+    </div>
+
+    <h2 id="verify">Verification is institutional memory</h2>
+    <p>
+      Run A: one known gate, one product-test failure (SafeArea <code>initialMetrics</code>), then green.
+      Run B: no <code>verify.sh</code>, five failing Jest runs before a working setup, then one assertion mismatch.
+      The difference is not “A wrote better feature code.” The gate encoded which tool needs which config tweak.
+    </p>
+
+    <pre class="mermaid">
+flowchart TD
+  subgraph A["Run A · known gate"]
+    A1["verify.sh --lint-only"] --> A2["6 tests fail · SafeArea"]
+    A2 --> A3["render-with-providers + act"]
+    A3 --> A4["24 tests green"]
+  end
+  subgraph B["Run B · rediscover the env"]
+    B1["npx jest"] --> B2["transformIgnorePatterns / pnpm"]
+    B2 --> B3["msw/node export condition"]
+    B3 --> B4["until-async ESM dead end"]
+    B4 --> B5["abandon MSW · mock fetch"]
+    B5 --> B6["getByRole alert mismatch"]
+    B6 --> B7["9 tests green"]
+  end
+    </pre>
+
+    <div class="two">
+      <div class="card">
+        <h3 style="color:var(--a);margin-top:0;">Run A gate</h3>
+        <table>
+          <thead><tr><th>Command</th><th>Time</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td><code>verify.sh --lint-only</code></td><td class="num">17.8 s</td><td><span class="bad">6 tests fail</span></td></tr>
+            <tr><td><code>pnpm test</code> (failed suites)</td><td class="num">9.7 s</td><td><span class="ok">9/9</span></td></tr>
+            <tr><td><code>verify.sh --lint-only</code> #2</td><td class="num">12.8 s</td><td><span class="ok">10 suites, 24 tests</span></td></tr>
+            <tr><td><code>pnpm run typecheck</code></td><td class="num">2.5 s</td><td><span class="ok">Pass</span></td></tr>
+            <tr><td>Full app-boot verify</td><td class="num">—</td><td><span class="warn">Not run</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--b);margin-top:0;">Run B ad-hoc</h3>
+        <table>
+          <thead><tr><th>Command</th><th>Time</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td><code>npx jest</code> #1–4</td><td class="num">~18 s</td><td><span class="bad">Suites would not load</span></td></tr>
+            <tr><td><code>npx jest</code> fetch mocks</td><td class="num">8.7 s</td><td><span class="bad">8/9 · alert role</span></td></tr>
+            <tr><td><code>npx jest</code> after fix</td><td class="num">5.6 s</td><td><span class="ok">9/9 · 3 suites</span></td></tr>
+            <tr><td><code>tsc</code> + <code>expo lint</code></td><td class="num">4.2 s</td><td><span class="ok">Pass</span></td></tr>
+            <tr><td><code>verify.sh</code></td><td class="num">—</td><td><span class="warn">Not in repo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="architecture">Architecture only diverged where the harness spelled it out</h2>
+    <p>
+      Left to the user skill <code>react-native-patterns</code>, Run B chose hooks + plain components —
+      the mainstream RN default. Compound components appeared only because <code>AGENTS.md</code> required them.
+      Test-per-function vs coarser co-located tests is the same story.
+    </p>
+
+    <pre class="mermaid">
+flowchart TB
+  S["react-native-patterns skill loaded in both runs"]
+  S --> A["Run A + AGENTS.md: use compound components"]
+  S --> B["Run B: prefer custom hooks"]
+  A --> AU["AccountBalance / RecentActivity as compounds · 9 UI/lib test files"]
+  B --> BU["hooks + simple components · 3 coarser suites"]
+    </pre>
+
+    <div class="two">
+      <div class="chart">
+        <h3>Coverage density</h3>
+        <div class="gbar">
+          <span>Tests added</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:39%"></div></div>
+            <div class="gmeta"><span>A ~23</span><span>B 9</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Suites</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:30%"></div></div>
+            <div class="gmeta"><span>A 10</span><span>B 3</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Files created</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:57%"></div></div>
+            <div class="gmeta"><span>A 21</span><span>B 12</span></div>
+          </div>
+        </div>
+        <div class="gbar">
+          <span>Lines</span>
+          <div class="gpair">
+            <div class="gtrack"><div class="gfill a" style="width:100%"></div></div>
+            <div class="gtrack"><div class="gfill b" style="width:57%"></div></div>
+            <div class="gmeta"><span>A ~1,125</span><span>B +643 / −45</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">Layout chosen</h3>
+        <table>
+          <thead><tr><th>Area</th><th>Run A</th><th>Run B</th></tr></thead>
+          <tbody>
+            <tr><td>API</td><td><code>lib/api/</code> + tests</td><td><code>api/</code> + 1 test</td></tr>
+            <tr><td>Money</td><td><code>lib/money/</code> + test</td><td><code>features/merchant/</code> + test</td></tr>
+            <tr><td>Activity helper</td><td><code>select-recent-activity</code> + test</td><td>inline <code>.slice(0, 3)</code></td></tr>
+            <tr><td>Hook</td><td><code>hooks/use-merchant</code> + test</td><td>same hook, no dedicated test</td></tr>
+            <tr><td>UI</td><td>compounds + per-file tests</td><td>simple components + home test</td></tr>
+            <tr><td>Test util</td><td><code>render-with-providers</code></td><td>inlined SafeArea metrics</td></tr>
+            <tr><td>Trail</td><td><code>PROGRESS.md</code></td><td>none</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="insights">Insights</h2>
+
+    <article class="insight">
+      <div class="num">Insight 2</div>
+      <h3>Run B was not “no guardrails”</h3>
+      <p>
+        User rules (Conventional Commits, TS strict, Jest) and skills
+        (<code>react-native-patterns</code>, <code>commit-after-change</code>, <code>tdd</code>)
+        still applied. That is why Run B still wrote loading/error states, tests, and a commit.
+        The repo harness’s distinctive additions were narrower: compound components,
+        <code>PROGRESS.md</code>, test-per-function, and a pre-tested <code>verify.sh</code> gate.
+      </p>
+    </article>
+
+    <article class="insight">
+      <div class="num">Insight 3</div>
+      <h3>Verification gates store known-working config</h3>
+      <p>
+        Losing <code>verify.sh</code> forced rediscovery of jest-expo + pnpm + <code>msw/node</code>
+        export conditions. Gates are not only correctness checks; they are institutional memory
+        about which version of which tool needs which tweak.
+      </p>
+    </article>
+
+    <article class="insight">
+      <div class="num">Insight 4</div>
+      <h3>Spell architectural choices explicitly</h3>
+      <p>
+        The model has weak defaults for design patterns and follows the most idiomatic path
+        without explicit guidance. Compound components did not emerge from a “patterns” skill
+        alone. If the team wants them, the harness must say so.
+      </p>
+    </article>
+
+    <article class="insight">
+      <div class="num">Insight 5</div>
+      <h3>Fingerprint of effort ≠ call count</h3>
+      <p>
+        Similar totals, different jobs: Run A writes files and updates progress; Run B shells
+        through a broken test runner. A harness with a working gate shifts the mix from
+        environment debugging to feature implementation.
+      </p>
+    </article>
+
+    <article class="insight">
+      <div class="num">Insight 6</div>
+      <h3>Scope creep was not tested</h3>
+      <p>
+        Neither run paginated or entered Step 2. The prompt (“Step 1 only”) was tight enough
+        that vertical-slice guidance and <code>PROGRESS.md</code> were not the thing that
+        prevented drift. A fuzzier, larger task would be needed to measure that guardrail.
+      </p>
+    </article>
+
+    <h2 id="shipped">What shipped — same Step 1, different formality</h2>
+    <table>
+      <thead>
+        <tr><th>Check</th><th>Run A</th><th>Run B</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Balances + currency symbol</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+        <tr><td>3 recent items, description + amount</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+        <tr><td>Show More modal (no pagination)</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+        <tr><td>Loading / error / retry</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+        <tr><td>Invented API client</td><td class="ok">Yes · <code>lib/api</code></td><td class="ok">Yes · <code>api/</code></td></tr>
+        <tr><td>Compound components</td><td class="ok">Yes · AGENTS.md</td><td>No · hooks default</td></tr>
+        <tr><td>Test-per-function</td><td class="ok">Yes · ~23 tests</td><td>No · 9 tests, 3 suites</td></tr>
+        <tr><td>PROGRESS.md</td><td class="ok">Yes</td><td>No</td></tr>
+        <tr><td>Verification gate</td><td class="ok"><code>verify.sh --lint-only</code></td><td>ad-hoc jest / tsc / lint</td></tr>
+        <tr><td>Commit</td><td>None</td><td class="ok"><code>3e0febf</code></td></tr>
+        <tr><td>Step 2 pagination</td><td>Omitted</td><td>Omitted</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Capture notes from Run A — answered by Run B</h3>
+    <ul class="compact">
+      <li>Invent an API client without <code>AGENTS.md</code>? <strong>Yes.</strong></li>
+      <li>Skip tests, verify, or loading/error? <strong>Tests and loading/error: no. verify.sh: skipped because it was absent.</strong></li>
+      <li>Paginate in Step 1? <strong>No.</strong></li>
+      <li>Use compound components unprompted? <strong>No.</strong></li>
+      <li>Time re-discovering stack vs UI? <strong>~4 min explore; much of the remaining 6 min was Jest/MSW, not UI.</strong></li>
+    </ul>
+
+    <h2 id="table">Full comparison</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>With harness (A)</th>
+          <th>Without harness (B)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Model</td><td>Cursor Grok 4.6</td><td>Cursor Grok 4.6</td></tr>
+        <tr><td>Subagents</td><td>0</td><td>0</td></tr>
+        <tr><td>User turns (implementation)</td><td>1</td><td>1</td></tr>
+        <tr><td>Assistant steps</td><td>23</td><td>33</td></tr>
+        <tr><td>Prompt → last write</td><td class="a">~22 min</td><td class="b">~10 min</td></tr>
+        <tr><td>Explore before first code</td><td class="a">~9 min</td><td class="b">~4 min</td></tr>
+        <tr><td>Code + test + fix</td><td>~13 min</td><td>~6 min (incl. infra)</td></tr>
+        <tr><td>Verify / test-gate attempts</td><td>2 <code>verify.sh --lint-only</code> (1 fail, 1 pass)</td><td>5 failing Jest runs, then green + lint/tsc</td></tr>
+        <tr><td>Tool calls</td><td>106</td><td>116</td></tr>
+        <tr><td>Read / Write / Shell</td><td>51 / 22 / 4</td><td>48 / 19 / 15</td></tr>
+        <tr><td>Files created / modified</td><td>21 created, 3 modified</td><td>12 created, 3 modified, 1 renamed</td></tr>
+        <tr><td>Tests added</td><td class="a">~23</td><td class="b">9</td></tr>
+        <tr><td>Suites</td><td>10</td><td>3</td></tr>
+        <tr><td><code>PROGRESS.md</code></td><td>Yes</td><td>No</td></tr>
+        <tr><td>Compound components</td><td>Yes</td><td>No</td></tr>
+        <tr><td>Skills loaded</td><td>3 (patterns, commit, tdd)</td><td>3 (same user skills)</td></tr>
+        <tr><td>Full app verify</td><td>No</td><td>No</td></tr>
+        <tr><td>Commit</td><td>No</td><td>Yes (<code>3e0febf</code>)</td></tr>
+        <tr><td>Scope creep into Step 2</td><td>No</td><td>No</td></tr>
+        <tr><td>Transcript</td><td><code>16642d16</code></td><td><code>07b822d7</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Bottom line</h2>
+    <div class="two">
+      <div class="card">
+        <h3 style="color:var(--a);margin-top:0;">With harness</h3>
+        <p>
+          Slower front-end (discovery), clean verification path, test-per-function (~23 vs 9),
+          a <code>PROGRESS.md</code> trail, and an explicit compound-component structure.
+        </p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--b);margin-top:0;">Without repo harness</h3>
+        <p>
+          Faster start, then live Jest/MSW/jest-expo debugging; fewer, coarser tests;
+          no formal work trail; architecture defaulted to hooks. Not reckless — user-level
+          rules did real guardrail work.
+        </p>
+      </div>
+    </div>
+    <p>
+      For a single task in isolation, the harness imposes overhead. For repeated tasks or
+      team consistency, that overhead is an investment. The real value is not “better code”
+      but <strong>reducing rediscovery and amplifying test organization</strong>, plus encoding
+      known-working toolchain config.
+    </p>
+
+    <footer>
+      <strong>Caveats.</strong>
+      No token or cost data — do not compare compute from these files.
+      Thinking traces were not persisted (<code>thinking_chars = 0</code>).
+      Wall clock is file birth/mtime plus prompt timestamps, not model inference time.
+      Metrics-page authoring is excluded from implementation duration.
+      This is not a perfectly clean “no AI” ablation: user-level Cursor skills and rules
+      still applied in Run B. Single task, N = 1; patterns may not generalize.
+      Source notes: <a href="./HARNESS_ABLATION_INSIGHTS.md">HARNESS_ABLATION_INSIGHTS.md</a>,
+      <a href="./step-1-run-metrics-with-harness.html">run A</a>,
+      <a href="./step-1-run-metrics-no-harness.html">run B</a>.
+    </footer>
+  </div>
+</body>
+</html>
