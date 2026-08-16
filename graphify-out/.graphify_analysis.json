@@ -1,0 +1,548 @@
+{
+  "communities": {
+    "0": [
+      "app_modal",
+      "app_modal_modalscreen",
+      "app_modal_styles",
+      "app_tabs_index",
+      "app_tabs_index_homescreen",
+      "app_tabs_index_styles",
+      "app_tabs_layout",
+      "app_tabs_layout_tablayout",
+      "app_tabs_payouts",
+      "app_tabs_payouts_payoutsscreen",
+      "app_tabs_payouts_styles",
+      "components_haptic_tab",
+      "components_haptic_tab_haptictab",
+      "components_parallax_scroll_view",
+      "components_parallax_scroll_view_parallaxscrollview",
+      "components_parallax_scroll_view_props",
+      "components_parallax_scroll_view_styles",
+      "components_themed_text",
+      "components_themed_text_styles",
+      "components_themed_text_themedtext",
+      "components_themed_text_themedtextprops",
+      "components_themed_view",
+      "components_themed_view_themedview",
+      "components_themed_view_themedviewprops",
+      "components_ui_collapsible",
+      "components_ui_collapsible_collapsible",
+      "components_ui_collapsible_styles",
+      "components_ui_icon_symbol",
+      "components_ui_icon_symbol_iconmapping",
+      "components_ui_icon_symbol_iconsymbol",
+      "components_ui_icon_symbol_iconsymbolname",
+      "components_ui_icon_symbol_mapping",
+      "constants_theme",
+      "constants_theme_colors",
+      "constants_theme_fonts",
+      "hooks_use_color_scheme",
+      "hooks_use_theme_color",
+      "hooks_use_theme_color_usethemecolor"
+    ],
+    "1": [
+      "constants_index",
+      "constants_index_api_base_url",
+      "mocks_data",
+      "mocks_data_available_balance_eur",
+      "mocks_data_available_balance_gbp",
+      "mocks_data_baseactivities",
+      "mocks_data_createpayout",
+      "mocks_data_generateallactivities",
+      "mocks_data_generatemockactivity",
+      "mocks_data_generatenewactivities",
+      "mocks_data_generatepayoutid",
+      "mocks_data_getallactivities",
+      "mocks_data_getavailablebalance",
+      "mocks_data_getcurrentcurrency",
+      "mocks_data_getpaginatedactivity",
+      "mocks_data_getpayoutbyid",
+      "mocks_data_getpendingbalance",
+      "mocks_data_payoutstore",
+      "mocks_data_pending_balance_eur",
+      "mocks_data_pending_balance_gbp",
+      "mocks_data_setcurrency",
+      "mocks_handlers",
+      "mocks_handlers_logrequest",
+      "types_api",
+      "types_api_activityitem",
+      "types_api_activityresponse",
+      "types_api_activitystatus",
+      "types_api_activitytype",
+      "types_api_balanceresponse",
+      "types_api_createpayoutrequest",
+      "types_api_currency",
+      "types_api_merchantdataresponse",
+      "types_api_paginatedactivityresponse",
+      "types_api_payoutresponse",
+      "types_api_payoutstatus"
+    ],
+    "2": [
+      "app",
+      "app_experiments_reactcompiler",
+      "app_experiments_typedroutes",
+      "app_expo",
+      "app_expo_experiments",
+      "app_expo_icon",
+      "app_expo_ios",
+      "app_expo_name",
+      "app_expo_newarchenabled",
+      "app_expo_orientation",
+      "app_expo_plugins",
+      "app_expo_scheme",
+      "app_expo_slug",
+      "app_expo_userinterfacestyle",
+      "app_expo_version",
+      "app_expo_web",
+      "app_ios_bundleidentifier",
+      "app_ios_supportstablet",
+      "app_web_favicon",
+      "app_web_output",
+      "components_external_link",
+      "components_external_link_externallink",
+      "components_external_link_props",
+      "expo_router",
+      "package_dependencies_expo_router"
+    ],
+    "3": [
+      "eslint",
+      "eslint_config_expo",
+      "jest",
+      "jest_expo",
+      "msw",
+      "package_devdependencies",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_config_expo",
+      "package_devdependencies_jest",
+      "package_devdependencies_jest_expo",
+      "package_devdependencies_msw",
+      "package_devdependencies_react_test_renderer",
+      "package_devdependencies_testing_library_react_native",
+      "package_devdependencies_types_jest",
+      "package_devdependencies_types_react",
+      "package_devdependencies_typescript",
+      "react_test_renderer",
+      "testing_library_react_native",
+      "types_jest",
+      "types_react",
+      "typescript"
+    ],
+    "4": [
+      "audit",
+      "audit_any_file_match",
+      "audit_check_critical",
+      "audit_check_recommended",
+      "audit_contains_pattern",
+      "audit_dir_exists",
+      "audit_fail",
+      "audit_file_exists",
+      "audit_fl_path",
+      "audit_header",
+      "audit_instructions_file",
+      "audit_instructions_path",
+      "audit_makefile_has_target",
+      "audit_pass",
+      "audit_sh__entry",
+      "audit_warn"
+    ],
+    "5": [
+      "package",
+      "package_main",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_android",
+      "package_scripts_ios",
+      "package_scripts_lint",
+      "package_scripts_reset_project",
+      "package_scripts_start",
+      "package_scripts_test",
+      "package_scripts_test_watch",
+      "package_scripts_typecheck",
+      "package_scripts_web",
+      "package_version"
+    ],
+    "6": [
+      "run_apps",
+      "run_apps_kill_tree",
+      "run_apps_run_platform",
+      "run_apps_scan_log_for_errors",
+      "run_apps_sh__entry",
+      "run_apps_wait_for_boot",
+      "verify",
+      "verify_common",
+      "verify_common_fail",
+      "verify_common_info",
+      "verify_common_ok",
+      "verify_common_sh__entry",
+      "verify_common_step",
+      "verify_common_warn",
+      "verify_sh__entry"
+    ],
+    "7": [
+      "app_layout",
+      "app_layout_rootlayout",
+      "app_layout_rootnavigator",
+      "jest_setup",
+      "mocks_handlers_handlers",
+      "mocks_server",
+      "mocks_server_node",
+      "mocks_server_node_server",
+      "mocks_server_node_test",
+      "mocks_server_server",
+      "mocks_usemsw",
+      "mocks_usemsw_usemsw"
+    ],
+    "8": [
+      "ref_expo_env_d_ts",
+      "ref_expo_tsconfig_base",
+      "ref_expo_types_ts",
+      "ref_ts",
+      "ref_tsx",
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_extends",
+      "tsconfig_include"
+    ],
+    "9": [
+      "mocks_polyfills",
+      "mocks_polyfills_addeventlistener",
+      "mocks_polyfills_close",
+      "mocks_polyfills_constructor",
+      "mocks_polyfills_dispatchevent",
+      "mocks_polyfills_postmessage",
+      "mocks_polyfills_preventdefault",
+      "mocks_polyfills_removeeventlistener",
+      "mocks_polyfills_stopimmediatepropagation",
+      "mocks_polyfills_stoppropagation"
+    ],
+    "10": [
+      "app_adaptiveicon_backgroundcolor",
+      "app_adaptiveicon_backgroundimage",
+      "app_adaptiveicon_foregroundimage",
+      "app_adaptiveicon_monochromeimage",
+      "app_android_adaptiveicon",
+      "app_android_edgetoedgeenabled",
+      "app_android_package",
+      "app_android_predictivebackgestureenabled",
+      "app_expo_android"
+    ],
+    "11": [
+      "expo_constants",
+      "package_dependencies",
+      "package_dependencies_expo_constants",
+      "package_dependencies_react",
+      "package_dependencies_react_native_async_storage_async_storage",
+      "package_dependencies_react_native_screens",
+      "react",
+      "react_native_async_storage_async_storage",
+      "react_native_screens"
+    ],
+    "12": [
+      "eslint_config",
+      "eslint_config_defineconfig",
+      "eslint_config_expoconfig"
+    ],
+    "13": [
+      "components_ui_icon_symbol_ios",
+      "components_ui_icon_symbol_ios_iconsymbol"
+    ],
+    "14": [
+      "expo",
+      "package_dependencies_expo"
+    ],
+    "15": [
+      "expo_font",
+      "package_dependencies_expo_font"
+    ],
+    "16": [
+      "expo_haptics",
+      "package_dependencies_expo_haptics"
+    ],
+    "17": [
+      "expo_image",
+      "package_dependencies_expo_image"
+    ],
+    "18": [
+      "expo_linking",
+      "package_dependencies_expo_linking"
+    ],
+    "19": [
+      "expo_splash_screen",
+      "package_dependencies_expo_splash_screen"
+    ],
+    "20": [
+      "expo_status_bar",
+      "package_dependencies_expo_status_bar"
+    ],
+    "21": [
+      "expo_symbols",
+      "package_dependencies_expo_symbols"
+    ],
+    "22": [
+      "expo_system_ui",
+      "package_dependencies_expo_system_ui"
+    ],
+    "23": [
+      "expo_vector_icons",
+      "package_dependencies_expo_vector_icons"
+    ],
+    "24": [
+      "expo_web_browser",
+      "package_dependencies_expo_web_browser"
+    ],
+    "25": [
+      "fast_text_encoding",
+      "package_dependencies_fast_text_encoding"
+    ],
+    "26": [
+      "hooks_use_color_scheme_web",
+      "hooks_use_color_scheme_web_usecolorscheme"
+    ],
+    "27": [
+      "package_dependencies_react_dom",
+      "react_dom"
+    ],
+    "28": [
+      "package_dependencies_react_native",
+      "react_native"
+    ],
+    "29": [
+      "package_dependencies_react_native_gesture_handler",
+      "react_native_gesture_handler"
+    ],
+    "30": [
+      "package_dependencies_react_native_reanimated",
+      "react_native_reanimated"
+    ],
+    "31": [
+      "package_dependencies_react_native_safe_area_context",
+      "react_native_safe_area_context"
+    ],
+    "32": [
+      "package_dependencies_react_native_url_polyfill",
+      "react_native_url_polyfill"
+    ],
+    "33": [
+      "package_dependencies_react_native_web",
+      "react_native_web"
+    ],
+    "34": [
+      "package_dependencies_react_native_worklets",
+      "react_native_worklets"
+    ],
+    "35": [
+      "package_dependencies_react_navigation_bottom_tabs",
+      "react_navigation_bottom_tabs"
+    ],
+    "36": [
+      "package_dependencies_react_navigation_elements",
+      "react_navigation_elements"
+    ],
+    "37": [
+      "package_dependencies_react_navigation_native",
+      "react_navigation_native"
+    ],
+    "38": [
+      "package_dependencies_tslib",
+      "tslib"
+    ],
+    "39": [
+      "jest_config"
+    ],
+    "40": [
+      "jest_resolver"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09815078236130868,
+    "1": 0.09411764705882353,
+    "2": 0.08,
+    "3": 0.09523809523809523,
+    "4": 0.2,
+    "5": 0.13333333333333333,
+    "6": 0.2857142857142857,
+    "7": 0.24242424242424243,
+    "8": 0.18181818181818182,
+    "9": 0.2222222222222222,
+    "10": 0.2222222222222222,
+    "11": 0.2222222222222222,
+    "12": 0.6666666666666666,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0
+  },
+  "gods": [
+    {
+      "id": "app_expo",
+      "label": "expo",
+      "degree": 14
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 10
+    },
+    {
+      "id": "run_apps_run_platform",
+      "label": "run_platform()",
+      "degree": 8
+    },
+    {
+      "id": "components_themed_view_themedview",
+      "label": "ThemedView()",
+      "degree": 7
+    },
+    {
+      "id": "hooks_use_theme_color_usethemecolor",
+      "label": "useThemeColor()",
+      "degree": 7
+    },
+    {
+      "id": "components_themed_text_themedtext",
+      "label": "ThemedText()",
+      "degree": 6
+    },
+    {
+      "id": "expo_router",
+      "label": "expo-router",
+      "degree": 6
+    },
+    {
+      "id": "audit_sh__entry",
+      "label": "audit.sh script",
+      "degree": 6
+    },
+    {
+      "id": "run_apps_sh__entry",
+      "label": "run-apps.sh script",
+      "degree": 6
+    },
+    {
+      "id": "app_android_adaptiveicon",
+      "label": "adaptiveIcon",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "TabLayout()",
+      "target": "HapticTab()",
+      "source_files": [
+        "app/(tabs)/_layout.tsx",
+        "components/haptic-tab.tsx"
+      ],
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "ParallaxScrollView()",
+      "target": "useThemeColor()",
+      "source_files": [
+        "components/parallax-scroll-view.tsx",
+        "hooks/use-theme-color.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `ParallaxScrollView()` unexpectedly reaches hub `useThemeColor()`"
+    },
+    {
+      "source": "plugins",
+      "target": "expo-router",
+      "source_files": [
+        "app.json",
+        "package.json"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "extends",
+      "why": "connects across different repos/directories; peripheral node `plugins` unexpectedly reaches hub `expo-router`"
+    },
+    {
+      "source": "run-apps.sh script",
+      "target": "warn()",
+      "source_files": [
+        "run-apps.sh",
+        "verify-common.sh"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `warn()` unexpectedly reaches hub `run-apps.sh script`"
+    },
+    {
+      "source": "ThemedText()",
+      "target": "useThemeColor()",
+      "source_files": [
+        "components/themed-text.tsx",
+        "hooks/use-theme-color.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `expo-router` connect `Community 2` to `Community 0`, `Community 7`?",
+      "why": "High betweenness centrality (0.428) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `Community 11` to `Community 2`, `Community 5`, `Community 14`, `Community 15`, `Community 16`, `Community 17`, `Community 18`, `Community 19`, `Community 20`, `Community 21`, `Community 22`, `Community 23`, `Community 24`, `Community 25`, `Community 27`, `Community 28`, `Community 29`, `Community 30`, `Community 31`, `Community 32`, `Community 33`, `Community 34`, `Community 35`, `Community 36`, `Community 37`, `Community 38`?",
+      "why": "High betweenness centrality (0.418) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `expo-router` connect `Community 2` to `Community 11`?",
+      "why": "High betweenness centrality (0.323) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Props`, `ThemedTextProps`, `ThemedViewProps` to the rest of the system?",
+      "why": "108 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09815078236130868 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09411764705882353 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.08 - nodes in this community are weakly interconnected."
+    }
+  ]
+}
