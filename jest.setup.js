@@ -4,7 +4,10 @@ import { server } from './mocks/server.node';
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 
 // Reset any request handlers that are declared as a part of our tests
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  jest.restoreAllMocks();
+});
 
 // Clean up after the tests are finished
 afterAll(() => server.close());

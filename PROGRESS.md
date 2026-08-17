@@ -2,7 +2,7 @@
 
 ## Step 1: Merchant Home Screen — DONE
 
-Fetch and display the merchant financial overview. Complete in code with `./verify.sh --lint-only` green (lint, typecheck, 24 tests). Full `./verify.sh` app-boot checks were not run.
+Fetch and display the merchant financial overview. Complete in code with `./verify.sh --lint-only` green (lint, typecheck, tests). Full `./verify.sh` app-boot checks were not run.
 
 - [x] API client for `GET /api/merchant` (`lib/api`)
 - [x] Money formatting from minor units + currency symbol (`lib/money`)
